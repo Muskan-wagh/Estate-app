@@ -36,7 +36,7 @@ export default async function Home({ searchParams }) {
 
         <div className="relative z-[10] max-w-5xl mx-auto px-6 text-center space-y-12">
           <h1 className="text-7xl md:text-[120px] font-bold tracking-tighter leading-tight uppercase font-outfit text-white drop-shadow-[0_2px_40px_rgba(0,0,0,0.5)]">
-            Rad Apartments
+            Find Your Workspace
           </h1>
           <p className="max-w-2xl mx-auto text-xl text-zinc-100 font-medium leading-relaxed drop-shadow-lg opacity-80 backdrop-blur-sm px-4">
             Discover a curated collection of premium properties and architectural gems.
