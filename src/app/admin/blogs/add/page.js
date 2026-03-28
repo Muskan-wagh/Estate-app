@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -9,19 +9,40 @@ import { useRouter } from 'next/navigation';
 export default function AddBlog() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [imageFile, setImageFile] = useState(null);
 
     const [formData, setFormData] = useState({
         title: '',
-        content: ''
+        content: '',
+        property_type: 'Commercial',
+        location: '',
+        address: '',
+        mpbhulekh_link: '',
+        status: 'published'
     });
+
+    // Admin Check
+    useEffect(() => {
+        const checkAdmin = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                router.push('/login');
+                return;
+            }
+            const { data: adminData } = await supabase
+                .from('admins')
+                .select('id')
+                .eq('id', session.user.id)
+                .single();
+            if (!adminData) router.push('/');
+            else setIsAdmin(true);
+        };
+        checkAdmin();
+    }, [router]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleImageChange = (e) => {
-        setImageFile(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
@@ -31,80 +52,109 @@ export default function AddBlog() {
         try {
             let imageUrl = '';
             if (imageFile) {
-                const fileExt = imageFile.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
+                const fileName = `${Math.random()}.${imageFile.name.split('.').pop()}`;
                 const filePath = `blogs/${fileName}`;
-
-                const { error: uploadError } = await supabase.storage
-                    .from('properties') // I'll use the same bucket or 'blogs' if it exists. 
-                    .upload(filePath, imageFile);
-
+                const { error: uploadError } = await supabase.storage.from('properties').upload(filePath, imageFile);
                 if (uploadError) throw uploadError;
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('properties')
-                    .getPublicUrl(filePath);
-
+                const { data: { publicUrl } } = supabase.storage.from('properties').getPublicUrl(filePath);
                 imageUrl = publicUrl;
             }
 
-            const { error } = await supabase
-                .from('blogs')
-                .insert([
-                    {
-                        title: formData.title,
-                        content: formData.content,
-                        image_url: imageUrl,
-                    }
-                ]);
+            const { error } = await supabase.from('blogs').insert([{
+                ...formData,
+                image_url: imageUrl,
+            }]);
 
             if (error) throw error;
-
             alert('Article published successfully!');
-            router.push('/blog');
-
+            router.push('/blogs');
         } catch (error) {
-            console.error(error);
-            alert('Error publishing article: ' + error.message);
+            alert('Error: ' + error.message);
         } finally {
             setLoading(false);
         }
     };
 
+    if (!isAdmin) return null;
+
     return (
-        <main className="min-h-screen bg-zinc-950 text-white pb-32">
-            <Navbar />
-
-            <section className="pt-40 max-w-4xl mx-auto px-6">
-                <div className="space-y-6 mb-16 border-b border-zinc-900 pb-16 text-center md:text-left">
-                    <h1 className="text-5xl font-black tracking-tighter uppercase italic leading-none">Editorial <span className="text-zinc-500">Board</span></h1>
-                    <p className="max-w-xl text-lg text-zinc-400 font-medium italic leading-relaxed mx-auto md:mx-0">
-                        Share your architectural wisdom and market insights with the global community.
+        <main className="min-h-screen bg-white text-zinc-950 font-sans pb-32">
+            <Navbar lightHeader={true} />
+            <section className="pt-40 max-w-xl mx-auto px-6">
+                <header className="mb-16">
+                    <h1 className="text-4xl font-black mb-4 tracking-tighter">New Editorial</h1>
+                    <p className="text-xs font-black text-zinc-300 uppercase tracking-widest leading-loose max-w-xs">
+                        Publish detailed property insights and architectural wisdom.
                     </p>
-                </div>
+                </header>
 
-                <form onSubmit={handleSubmit} className="space-y-12">
+                <form onSubmit={handleSubmit} className="space-y-10">
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Headline</label>
-                        <input name="title" onChange={handleChange} required className="w-full bg-zinc-950 border border-white/5 px-4 py-6 text-xl font-black italic focus:outline-none focus:border-emerald-500 transition-colors rounded-sm" placeholder="The Future of Urban Architecture" />
+                        <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Headline</label>
+                        <input name="title" onChange={handleChange} required className="w-full border-b border-zinc-200 py-3 text-lg font-bold focus:outline-none focus:border-zinc-950 bg-transparent transition-all" placeholder="Architecture Trends from Belgium" />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Property Category</label>
+                            <select name="property_type" onChange={handleChange} className="w-full border-b border-zinc-200 py-3 text-sm font-bold bg-transparent focus:outline-none focus:border-zinc-950 appearance-none">
+                                <option value="Commercial">Commercial</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Government">Government</option>
+                                <option value="Plot">Plot</option>
+                            </select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Visual Asset</label>
+                            <input type="file" required onChange={(e) => setImageFile(e.target.files[0])} className="w-full text-[10px] text-zinc-400 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:bg-zinc-100 file:text-[10px] file:font-black file:uppercase" />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Location</label>
+                            <input name="location" onChange={handleChange} required className="w-full border-b border-zinc-200 py-3 text-sm font-bold bg-transparent focus:outline-none" placeholder="Indore, MP" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">MPBhulekh Link</label>
+                            <input name="mpbhulekh_link" onChange={handleChange} className="w-full border-b border-zinc-200 py-3 text-sm font-bold bg-transparent focus:outline-none" placeholder="https://mpbhulekh.gov.in/..." />
+                        </div>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Feature Image</label>
-                        <input type="file" accept="image/*" onChange={handleImageChange} required className="w-full bg-zinc-900 border border-white/5 px-4 py-4 text-sm rounded-sm file:mr-8 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:uppercase file:bg-zinc-800 file:text-white cursor-pointer" />
+                        <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Exact Address</label>
+                        <input name="address" onChange={handleChange} required className="w-full border-b border-zinc-200 py-3 text-sm font-bold bg-transparent focus:outline-none" placeholder="Scheme No. 140, AB Road" />
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Content</label>
-                        <textarea name="content" onChange={handleChange} required rows="15" className="w-full bg-zinc-950 border border-white/5 px-6 py-6 text-lg leading-relaxed font-medium italic text-zinc-400 focus:outline-none focus:border-emerald-500 transition-colors rounded-sm resize-none" placeholder="Start writing your masterpiece..." />
+                        <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Publication Status</label>
+                        <div className="flex gap-4 pt-2">
+                            {['published', 'draft'].map((s) => (
+                                <button
+                                    key={s}
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, status: s })}
+                                    className={`px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border ${formData.status === s
+                                        ? 'bg-zinc-950 text-white border-zinc-950 shadow-lg'
+                                        : 'bg-transparent text-zinc-300 border-zinc-100 hover:border-zinc-300'
+                                        }`}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
-                    <button disabled={loading} className={`w-full py-6 text-sm font-black uppercase tracking-widest rounded-sm transition-all shadow-2xl ${loading ? 'bg-zinc-800 text-zinc-500' : 'bg-white text-black hover:bg-zinc-200 hover:scale-[1.01] active:scale-100'}`}>
-                        {loading ? 'Publishing Thoughts...' : 'Publish Article'}
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400">Content</label>
+                        <textarea name="content" onChange={handleChange} required rows="8" className="w-full border-b border-zinc-200 py-3 text-sm font-medium leading-relaxed bg-transparent focus:outline-none resize-none" placeholder="Narrate the architectural essence..." />
+                    </div>
+
+                    <button disabled={loading} className="w-full py-6 bg-zinc-950 text-white text-[11px] font-black uppercase tracking-[0.4em] hover:bg-zinc-800 transition-all shadow-xl disabled:opacity-50">
+                        {loading ? 'Transmitting Editorial...' : 'Publish Blog'}
                     </button>
                 </form>
             </section>
-
             <Footer />
         </main>
     );

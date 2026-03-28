@@ -73,9 +73,9 @@ const Navbar = ({ lightHeader = false }) => {
 
     const links = [
         { name: 'Home', href: '/' },
-        { name: 'Apartments', href: '/properties' },
-        { name: 'About us', href: '/about' },
-        { name: 'Blog', href: '/blog' },
+        { name: 'Blogs', href: '/blogs' },
+        { name: 'About us', href: '/about-us' },
+        { name: 'Contact', href: '/contact' },
     ];
 
     const isDarkText = scrolled || lightHeader || mobileMenuOpen;
@@ -87,9 +87,9 @@ const Navbar = ({ lightHeader = false }) => {
                 <div className="flex-1">
                     <Link
                         href="/"
-                        className={`text-xl md:text-2xl font-black tracking-tighter transition-colors duration-500 ${isDarkText ? 'text-zinc-950' : 'text-white'}`}
+                        className={`text-xl md:text-2xl font-serif font-black tracking-tighter transition-colors duration-500 ${isDarkText ? 'text-zinc-950' : 'text-white'}`}
                     >
-                        ESTATE
+                        Estate
                     </Link>
                 </div>
 
