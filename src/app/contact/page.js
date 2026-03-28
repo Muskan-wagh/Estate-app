@@ -23,11 +23,7 @@ export default function ContactPage() {
                     <div className="space-y-12">
                         <div className="group">
                             <h3 className="text-lg font-black mb-3 group-hover:translate-x-1 transition-transform">Address</h3>
-                            <p className="text-zinc-500 font-medium text-sm leading-relaxed">Emil Holms Kanal 14 2300, Copenhagen</p>
-                        </div>
-                        <div className="group border-t border-zinc-50 pt-10">
-                            <h3 className="text-lg font-black mb-3 group-hover:translate-x-1 transition-transform">Phone</h3>
-                            <p className="text-zinc-500 font-medium text-sm leading-relaxed">+ 123 456 6789 + 123 456 6789</p>
+                            <p className="text-zinc-500 font-medium text-sm leading-relaxed">Indore</p>
                         </div>
                     </div>
                 </section>
