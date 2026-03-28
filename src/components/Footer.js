@@ -30,7 +30,7 @@ const Footer = () => {
                         {/* Directory */}
                         <ul className="space-y-3 px-2">
                             <li><Link href="/" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Home</Link></li>
-                            <li><Link href="/properties" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Apartments</Link></li>
+                            <li><Link href="/contact" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Contact</Link></li>
                         </ul>
 
                         {/* Socials */}
@@ -39,11 +39,6 @@ const Footer = () => {
                             <li><Link href="/blogs" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Blog</Link></li>
                         </ul>
 
-                        {/* Contact & Legal */}
-                        <ul className="space-y-3 px-2">
-                            <li><Link href="/privacy" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Privacy</Link></li>
-                            <li><Link href="#" className="text-[10px] uppercase font-black tracking-widest text-zinc-500 hover:text-white transition-colors">Instagram</Link></li>
-                        </ul>
                     </div>
                 </div>
 
@@ -52,11 +47,6 @@ const Footer = () => {
                     <p className="text-[8px] text-zinc-700 font-black uppercase tracking-[0.5em]">
                         &copy; 2026 Estate Core
                     </p>
-                    <div className="flex gap-6">
-                        <span className="text-[8px] text-zinc-800 font-bold uppercase tracking-widest">
-                            All Rights Reserved
-                        </span>
-                    </div>
                 </div>
             </div>
         </footer>
