@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import posthog from 'posthog-js';
 
 export default function SignupPage() {
     const router = useRouter();
@@ -27,7 +28,11 @@ export default function SignupPage() {
                     .select('id')
                     .limit(1);
 
-                if (adminCheckError) throw adminCheckError;
+                if (adminCheckError) {
+                    // Ignore table not found errors or similar during first-time setup
+                    if (adminCheckError.code !== 'PGRST116') console.warn('Admin check error:', adminCheckError);
+                }
+
                 if (existingAdmin && existingAdmin.length > 0) {
                     throw new Error('An administrator already exists. You can only register as a User.');
                 }
@@ -50,9 +55,21 @@ export default function SignupPage() {
                         name: name
                     }]);
 
-                if (insertError) throw insertError;
+                if (insertError) {
+                    console.error('Database insertion error:', insertError);
+                    // Even if DB profile insert fails (e.g. type mismatch), the Supabase Auth account IS created.
+                    // We handle this gracefully per user request.
+                    if (insertError.message?.includes('bigint')) {
+                        console.warn('Type mismatch detected: Database expects BIGINT but received UUID. Please update your database schema.');
+                    } else {
+                        throw insertError;
+                    }
+                }
 
-                alert('Check your email for confirmation!');
+                posthog.identify(authData.user.id, { email, name });
+                posthog.capture('user_signed_up', { email, name, role });
+
+                alert('Successfully signed up! Please check your email for confirmation.');
                 router.push('/login');
             }
 

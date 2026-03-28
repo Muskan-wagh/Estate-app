@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import PropertyCard from '@/components/PropertyCard';
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 600; // Cache for 10 minutes
 
 export default async function Home({ searchParams }) {
   const { location, type } = await searchParams;

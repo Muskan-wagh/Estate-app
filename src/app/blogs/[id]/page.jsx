@@ -1,46 +1,46 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { createClient } from '@/lib/supabase-server';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/lib/supabase';
 import { Playfair_Display } from 'next/font/google';
 import { MapPin, FileText, ExternalLink, Globe, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 const playfair = Playfair_Display({ subsets: ['latin'] });
 
-export default function BlogDetail() {
-    const { id } = useParams();
-    const [blog, setBlog] = useState(null);
-    const [loading, setLoading] = useState(true);
+export const revalidate = 3600; // Cache for 1 hour
 
-    useEffect(() => {
-        const fetchBlog = async () => {
-            const { data, error } = await supabase
-                .from('blogs')
-                .select('*')
-                .eq('id', id)
-                .single();
+export default async function BlogDetail({ params }) {
+    const { id } = await params;
+    const supabase = await createClient();
 
-            if (!error) setBlog(data);
-            setLoading(false);
-        };
-        fetchBlog();
-    }, [id]);
+    const { data: blog, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-    const renderMap = () => {
-        if (!blog?.map_link || blog.map_link.length < 5) return null;
+    if (error || !blog) {
+        return (
+            <div className="pt-40 text-center font-sans">
+                <h1 className="text-xl font-bold mb-4 uppercase text-black">Article Not Found</h1>
+                <Link href="/blogs" className="text-black font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 underline underline-offset-8">
+                    <ArrowLeft size={14} /> Back to Directory
+                </Link>
+            </div>
+        );
+    }
 
-        if (blog.map_link.includes('<iframe')) {
-            const cleanIframe = blog.map_link.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="100%"');
+    const renderMap = (mapLink) => {
+        if (!mapLink || mapLink.length < 5) return null;
+
+        if (mapLink.includes('<iframe')) {
+            const cleanIframe = mapLink.replace(/width="\d+"/, 'width="100%"').replace(/height="\d+"/, 'height="100%"');
             return <div dangerouslySetInnerHTML={{ __html: cleanIframe }} className="w-full h-full" />;
         }
 
         return (
             <iframe
-                src={blog.map_link}
+                src={mapLink}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -50,16 +50,6 @@ export default function BlogDetail() {
             />
         );
     };
-
-    if (loading) return null;
-    if (!blog) return (
-        <div className="pt-40 text-center font-sans">
-            <h1 className="text-xl font-bold mb-4 uppercase text-black">Article Not Found</h1>
-            <Link href="/blogs" className="text-black font-black uppercase text-[10px] tracking-widest flex items-center justify-center gap-2 underline underline-offset-8">
-                <ArrowLeft size={14} /> Back to Directory
-            </Link>
-        </div>
-    );
 
     return (
         <main className="min-h-screen bg-white text-black font-sans flex flex-col">
@@ -143,7 +133,7 @@ export default function BlogDetail() {
                             <p className="text-[11px] font-black text-black uppercase tracking-[0.5em]">REGIONAL MAPPING</p>
                         </div>
                         <div className="w-full aspect-video rounded-[3.5rem] overflow-hidden border-4 border-black transition-all duration-1000 shadow-2xl bg-zinc-50">
-                            {renderMap()}
+                            {renderMap(blog.map_link)}
                         </div>
                     </div>
                 )}

@@ -1,5 +1,6 @@
 import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { PHProvider } from './providers'
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -22,7 +23,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${outfit.variable} ${playfair.variable} h-full antialiased font-outfit`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col"><PHProvider>{children}</PHProvider></body>
     </html>
   );
 }

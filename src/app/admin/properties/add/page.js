@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useRouter } from 'next/navigation';
+import posthog from 'posthog-js';
 
 export default function AddProperty() {
     const router = useRouter();
@@ -115,12 +116,15 @@ export default function AddProperty() {
                 if (videoError) throw videoError;
             }
 
+            posthog.capture('property_published', { title: formData.title, type: formData.type, location: formData.location });
             alert('Property added successfully!');
             router.push('/');
 
         } catch (error) {
-            console.error(error);
-            alert('Error adding property: ' + error.message);
+            if (error.name !== 'AbortError') {
+                console.error(error);
+                alert('Error adding property: ' + error.message);
+            }
         } finally {
             setLoading(false);
         }

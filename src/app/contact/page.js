@@ -2,6 +2,7 @@
 
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import posthog from 'posthog-js';
 
 // Reusable Sub-Component
 const SectionLabel = ({ children }) => (
@@ -44,7 +45,7 @@ export default function ContactPage() {
                         "Drop us your email and our architects will reach out immediately."
                     </p>
 
-                    <form className="space-y-12">
+                    <form className="space-y-12" onSubmit={(e) => { e.preventDefault(); posthog.capture('contact_form_submitted'); }}>
                         <div className="grid grid-cols-1 gap-10">
                             <div className="relative group">
                                 <label className="text-[9px] font-black uppercase tracking-widest text-zinc-400 pl-1">Identity</label>

@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useRouter } from 'next/navigation';
+import posthog from 'posthog-js';
 
 export default function AddBlog() {
     const router = useRouter();
@@ -70,6 +71,7 @@ export default function AddBlog() {
             }]);
 
             if (error) throw error;
+            posthog.capture('blog_published', { title: formData.title, property_type: formData.property_type, location: formData.location });
             alert('Article published successfully!');
             router.push('/blogs');
         } catch (error) {

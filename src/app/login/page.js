@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import posthog from 'posthog-js';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -18,7 +19,7 @@ export default function LoginPage() {
         setLoading(true);
         setError(null);
 
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
@@ -26,7 +27,10 @@ export default function LoginPage() {
         if (error) {
             setError(error.message);
             setLoading(false);
+            posthog.capture('user_sign_in_failed', { error: error.message });
         } else {
+            posthog.identify(data.user.id, { email: data.user.email });
+            posthog.capture('user_signed_in', { email: data.user.email });
             router.push('/');
             router.refresh();
         }

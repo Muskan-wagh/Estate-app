@@ -1,0 +1,52 @@
+[
+  {
+    "event": "user_signed_in",
+    "description": "Fired when a user successfully signs in with email and password",
+    "file": "src/app/login/page.js"
+  },
+  {
+    "event": "user_sign_in_failed",
+    "description": "Fired when a login attempt fails, with the error message",
+    "file": "src/app/login/page.js"
+  },
+  {
+    "event": "user_signed_up",
+    "description": "Fired when a user successfully creates a new account, includes role (user/admin)",
+    "file": "src/app/signup/page.js"
+  },
+  {
+    "event": "property_inquiry_submitted",
+    "description": "Fired when a visitor submits the inquiry form on a property detail page",
+    "file": "src/app/properties/[id]/page.js"
+  },
+  {
+    "event": "blog_searched",
+    "description": "Fired when a user performs a search on the blogs listing page, includes location and category filters",
+    "file": "src/app/blogs/page.jsx"
+  },
+  {
+    "event": "contact_form_submitted",
+    "description": "Fired when a visitor submits the contact sales form",
+    "file": "src/app/contact/page.js"
+  },
+  {
+    "event": "property_published",
+    "description": "Fired when an admin successfully publishes a new property listing",
+    "file": "src/app/admin/properties/add/page.js"
+  },
+  {
+    "event": "blog_published",
+    "description": "Fired when an admin successfully publishes a new blog post/property article",
+    "file": "src/app/admin/blogs/add/page.js"
+  },
+  {
+    "event": "blog_document_downloaded",
+    "description": "Fired when a visitor clicks the legal document download link on a blog detail page",
+    "file": "src/app/blogs/[id]/page.jsx"
+  },
+  {
+    "event": "blog_bhulekh_link_clicked",
+    "description": "Fired when a visitor clicks the MP Bhulekh land records link on a blog detail page",
+    "file": "src/app/blogs/[id]/page.jsx"
+  }
+]

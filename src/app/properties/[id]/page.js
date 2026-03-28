@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import InquiryForm from './InquiryForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -150,23 +151,7 @@ export default async function PropertyDetail({ params }) {
                                     Fill the form below and an agent will contact you shortly.
                                 </p>
                             </div>
-                            <form className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 pl-4">Your Identity</label>
-                                    <input className="w-full bg-zinc-50 border border-zinc-100 px-5 py-4 text-sm focus:outline-none focus:border-zinc-950 transition-colors rounded-lg font-medium text-zinc-900" placeholder="FullName" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 pl-4">Digital Mail</label>
-                                    <input className="w-full bg-zinc-50 border border-zinc-100 px-5 py-4 text-sm focus:outline-none focus:border-zinc-950 transition-colors rounded-lg font-medium text-zinc-900" placeholder="EmailAddress" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 pl-4">Intent</label>
-                                    <textarea rows="4" className="w-full bg-zinc-50 border border-zinc-100 px-5 py-4 text-sm focus:outline-none focus:border-zinc-950 transition-colors rounded-lg resize-none font-medium text-zinc-900" placeholder="Message" />
-                                </div>
-                                <button type="button" className="w-full bg-zinc-950 text-white py-5 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-zinc-800 transition-all shadow-xl active:scale-[0.98]">
-                                    Transmit Inquiry
-                                </button>
-                            </form>
+                            <InquiryForm propertyId={id} propertyTitle={title} />
                         </div>
                     </aside>
                 </section>

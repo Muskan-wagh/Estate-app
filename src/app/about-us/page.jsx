@@ -47,7 +47,9 @@ const AboutUsPage = () => {
             if (error) throw error;
             setTeam(teamData || []);
         } catch (err) {
-            console.error('Core Logic Error:', err.message);
+            if (err.name !== 'AbortError') {
+                console.error('Core Logic Error:', err.message);
+            }
             setTeam([]);
         } finally {
             setLoading(false);
@@ -88,7 +90,10 @@ const AboutUsPage = () => {
                 setImageFile(null);
             }
         } catch (error) {
-            alert(`Architecture Add Failed: ${error.message}`);
+            if (error.name !== 'AbortError') {
+                console.error(error);
+                alert('Error adding property: ' + error.message);
+            }
         } finally {
             setSubmitting(false);
         }

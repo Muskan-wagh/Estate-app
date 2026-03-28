@@ -52,8 +52,14 @@ const Navbar = ({ lightHeader = false }) => {
         };
 
         const initialize = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            fetchUserAndName(session?.user || null);
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                fetchUserAndName(session?.user || null);
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    console.error('Navbar Initialization Error:', error);
+                }
+            }
         };
         initialize();
 
