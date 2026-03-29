@@ -172,7 +172,7 @@ const Navbar = ({ lightHeader = false }) => {
                                 key={link.name}
                                 href={link.href}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className={`block text-4xl font-black uppercase tracking-tighter ${pathname === link.href ? 'text-emerald-500' : 'text-zinc-950'}`}
+                                className={`block text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950 ${pathname === link.href ? 'underline decoration-2 underline-offset-4' : ''}`}
                             >
                                 {link.name}
                             </Link>
@@ -181,7 +181,7 @@ const Navbar = ({ lightHeader = false }) => {
                             <Link
                                 href="/admin"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className={`block text-4xl font-black uppercase tracking-tighter ${pathname.startsWith('/admin') ? 'text-emerald-500' : 'text-zinc-950'}`}
+                                className={`block text-2xl md:text-3xl font-black uppercase tracking-tight text-zinc-950 ${pathname.startsWith('/admin') ? 'underline decoration-2 underline-offset-4' : ''}`}
                             >
                                 Admin
                             </Link>

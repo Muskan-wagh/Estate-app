@@ -14,9 +14,9 @@ export default function ContactPage() {
         <main className="min-h-screen bg-white font-outfit">
             <Navbar lightHeader={true} />
 
-            <div className="pt-40 pb-32 px-6 max-w-xl mx-auto text-zinc-950">
+            <div className="pt-20 md:pt-32 pb-32 px-6 max-w-xl mx-auto text-zinc-950">
                 {/* Contact Header */}
-                <h1 className="text-5xl font-black mb-20 tracking-tighter">Contact</h1>
+                <h1 className="text-3xl md:text-5xl font-black mb-12 md:mb-20 tracking-tighter">Contact</h1>
 
                 {/* Address Info */}
                 <section className="mb-24">

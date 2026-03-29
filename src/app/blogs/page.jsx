@@ -99,4 +99,3 @@ export default async function BlogsPage({ searchParams }) {
         </main>
     );
 }
-

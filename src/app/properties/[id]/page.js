@@ -37,7 +37,7 @@ export default async function PropertyDetail({ params }) {
             <Navbar lightHeader={true} />
 
             {/* Header Container */}
-            <div className="pt-32 sm:pt-40 max-w-7xl mx-auto px-6">
+            <div className="pt-20 md:pt-32 max-w-7xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-16 border-b border-zinc-100 pb-12 sm:pb-16">
                     <div className="space-y-6 max-w-3xl">
                         <div className="flex gap-4">
@@ -48,7 +48,7 @@ export default async function PropertyDetail({ params }) {
                                 {type}
                             </span>
                         </div>
-                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter uppercase leading-tight text-zinc-900">{title}</h1>
+                        <h1 className="text-3xl md:text-5xl font-bold tracking-tighter uppercase leading-tight text-zinc-900">{title}</h1>
                         <p className="text-base sm:text-lg text-zinc-400 font-medium leading-relaxed opacity-80">{location}</p>
                     </div>
                     <div className="pt-4 text-left md:text-right w-full md:w-auto">

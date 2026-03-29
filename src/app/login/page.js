@@ -40,10 +40,10 @@ export default function LoginPage() {
         <main className="min-h-screen bg-zinc-50 text-zinc-950 pb-32 transition-colors duration-500 font-outfit">
             <Navbar lightHeader={true} />
 
-            <section className="pt-40 max-w-lg mx-auto px-6">
+            <section className="pt-20 md:pt-32 max-w-lg mx-auto px-6">
                 <div className="bg-white border border-zinc-200 p-12 rounded-2xl shadow-xl space-y-12">
                     <div className="space-y-4 text-center">
-                        <h1 className="text-4xl font-bold uppercase tracking-tighter text-zinc-900 drop-shadow-sm">Welcome <span className="text-zinc-300 font-medium">Back</span></h1>
+                        <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-tighter text-zinc-900 drop-shadow-sm">Welcome <span className="text-zinc-300 font-medium">Back</span></h1>
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Sign in to access exclusive insights and collections.</p>
                     </div>
 

@@ -8,7 +8,7 @@ import { Plus, Trash2, X } from 'lucide-react';
 
 // Modular Sub-Components to remove repetition
 const SectionLabel = ({ children }) => (
-    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-300 mb-10">{children}</p>
+    <p className="text-xs md:text-[10px] font-bold md:font-black uppercase tracking-widest md:tracking-[0.5em] text-zinc-400 mb-6 md:mb-10">{children}</p>
 );
 
 const FormInput = ({ label, placeholder, value, onChange, type = "text", required = true }) => (
@@ -104,18 +104,18 @@ const AboutUsPage = () => {
     return (
         <main className="min-h-screen bg-white font-outfit">
             <Navbar lightHeader={true} />
-            <div className="pt-40 pb-32 px-6 max-w-xl mx-auto text-zinc-950">
-                <header className="mb-24">
-                    <h1 className="text-5xl font-black mb-20 tracking-tighter">About us</h1>
+            <div className="pt-20 md:pt-32 pb-16 md:pb-32 px-6 max-w-xl mx-auto text-zinc-950">
+                <header className="mb-16 md:mb-24">
+                    <h1 className="text-3xl md:text-5xl font-bold md:font-black mb-8 md:mb-20 tracking-tight">About us</h1>
                     <SectionLabel>CORE PHILOSOPHY</SectionLabel>
-                    <p className="text-base font-medium leading-relaxed text-zinc-500 italic">
+                    <p className="text-base md:text-lg font-medium leading-relaxed text-zinc-600 italic">
                         "The pursuit of architectural excellence and human-centric design defines our every move."
                     </p>
                 </header>
 
-                <section className="mb-24">
+                <section className="mb-16 md:mb-24">
                     <div className="flex justify-between items-end mb-4 pr-1">
-                        <h2 className="text-3xl font-black tracking-tight underline underline-offset-8 decoration-zinc-100">Team</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold md:font-black tracking-tight underline underline-offset-8 decoration-zinc-100">Team</h2>
                         {isAdmin && (
                             <button onClick={() => setShowAddForm(!showAddForm)} className={`p-3 rounded-full transition-all border ${showAddForm ? 'bg-red-50 border-red-100 text-red-500 scale-90' : 'bg-zinc-50 border-zinc-100 text-zinc-900 shadow-sm hover:bg-zinc-100'}`}>
                                 {showAddForm ? <X size={18} /> : <Plus size={18} />}
@@ -140,7 +140,7 @@ const AboutUsPage = () => {
                         </div>
                     )}
 
-                    <p className="text-sm font-medium leading-loose text-zinc-400 mb-16 max-w-sm">
+                    <p className="text-sm font-medium leading-relaxed md:leading-loose text-zinc-500 mb-10 md:mb-16 max-w-sm">
                         Curating exceptional spaces requires an exceptional vision.
                     </p>
 
